@@ -136,5 +136,5 @@ class DesktopPet(tk.Tk):
         self.dialog_allowed = True
 
 if __name__ == "__main__":
-    pet_app = DesktopPet("C:/Users/Lenovo/Desktop/电脑桌面机器人--芝麻糕/blade.gif")
+    pet_app = DesktopPet("C:/Users/Lenovo/Desktop/blade_desktop_pet/blade.gif")
     pet_app.mainloop()
