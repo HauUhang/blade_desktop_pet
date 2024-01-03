@@ -1,8 +1,9 @@
 import tkinter as tk
+import random
 from tkinter import ttk
 from PIL import Image, ImageTk, ImageSequence
-import random
 from ctypes import windll
+from datetime import datetime
 
 # 自定义Canvas类，用于创建透明的画布
 class TransparentCanvas(tk.Canvas):
@@ -81,12 +82,12 @@ class DesktopPet(tk.Tk):
         pet_button = ttk.Button(self.button_canvas, text="抚摸", command=self.pet_pat, style="Transparent.TButton")
         pet_button.pack(side=tk.LEFT, padx=10)
 
-        talk_button = ttk.Button(self.button_canvas, text="你想知道什么？", command=self.talk_pat, style="Transparent.TButton")
+        talk_button = ttk.Button(self.button_canvas, text="关于饮月", command=self.talk_pat, style="Transparent.TButton")
         talk_button.pack(side=tk.LEFT, padx=10)
         
         # 创建对话框
         self.dialog = tk.Toplevel(self)
-        self.dialog.title("对话框")
+        self.dialog.overrideredirect(True)  # 隐藏标题栏和边框
         self.dialog.withdraw()
         self.dialog_label = tk.Label(self.dialog, padx=10, pady=10)
         self.dialog_label.pack()
@@ -117,7 +118,11 @@ class DesktopPet(tk.Tk):
         current_time = self.after(0)
         self.click_time = current_time
 
-        self.show_dialog_wrapper()
+        # 获取当前当地时间
+        local_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        message = f"现在是：\n{local_time}"
+
+        self.show_dialog_wrapper(message)
 
     # 处理宠物图像拖动事件
     def on_drag(self, event):
@@ -125,8 +130,8 @@ class DesktopPet(tk.Tk):
         self.canvas.coords(self.pet_id, x, y)
 
         if self.dialog.winfo_ismapped():
-            dialog_x = x + 140
-            dialog_y = y - 140
+            dialog_x = x + 150
+            dialog_y = y - 160
             self.dialog.geometry(f"+{int(dialog_x)}+{int(dialog_y)}")
 
     # 更新按钮窗口位置
@@ -149,8 +154,8 @@ class DesktopPet(tk.Tk):
         self.after(15000, self.schedule_random_dialog)
 
     # 弹出对话框
-    def show_dialog_wrapper(self):
-        self.show_dialog("嗯？", duration=3000)
+    def show_dialog_wrapper(self, custom_text=None):
+        self.show_dialog(custom_text, duration=3000)
 
     # 显示对话框
     def show_dialog(self, custom_text=None, duration=5000):
@@ -183,11 +188,27 @@ class DesktopPet(tk.Tk):
 
     # 未实现的宠物抚摸方法
     def pet_pat(self):
-        pass
+        message = "......"
+        pet_x, pet_y = self.canvas.coords(self.pet_id)
+        dialog_x = pet_x + 140
+        dialog_y = pet_y - 140
+        self.dialog.geometry(f"+{int(dialog_x)}+{int(dialog_y)}")
+        self.dialog_label.config(text=message)
+        self.dialog.deiconify()
+        self.dialog_allowed = False
+        self.after(5000, self.reset_dialog_flag)
 
     # 未实现的宠物交流方法
     def talk_pat(self):
-        pass
+        message = "哼，别让我抓到他的把柄"
+        pet_x, pet_y = self.canvas.coords(self.pet_id)
+        dialog_x = pet_x + 140
+        dialog_y = pet_y - 140
+        self.dialog.geometry(f"+{int(dialog_x)}+{int(dialog_y)}")
+        self.dialog_label.config(text=message)
+        self.dialog.deiconify()
+        self.dialog_allowed = False
+        self.after(5000, self.reset_dialog_flag)
 
 if __name__ == "__main__":
     # 创建DesktopPet应用并运行
