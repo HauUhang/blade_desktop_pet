@@ -7,9 +7,9 @@ class DesktopPet(tk.Tk):
     def __init__(self, gif_path):
         super().__init__()
 
-        self.title("芝麻糕")
+        self.title("芝麻糕") 
         self.overrideredirect(True)
-        self.attributes("-transparent", "white")
+        self.attributes("-transparent", "white") # 背景设置
         self.attributes("-topmost", True)  # 保持在最前面
 
         desktop_width = windll.user32.GetSystemMetrics(0)
@@ -60,12 +60,18 @@ class DesktopPet(tk.Tk):
         pet_button = tk.Button(self.button_window, text="抚摸", command=self.pet_pat)
         pet_button.pack(side=tk.LEFT, padx=10)
 
+        talk_button = tk.Button(self.button_window, text="你想知道什么？", command=self.talk_pat)
+        talk_button.pack(side=tk.LEFT, padx=10)
+
         # 创建对话框
         self.dialog = tk.Toplevel(self)
-        self.dialog.title("Dialog")
+        self.dialog.title("对话框")
         self.dialog.withdraw()  # 隐藏对话框
         self.dialog_label = tk.Label(self.dialog, padx=10, pady=10)
         self.dialog_label.pack()
+
+        # 绑定鼠标移动事件，实时更新按钮窗口位置
+        self.canvas.bind('<B1-Motion>', self.update_button_window_position)
 
     def load_gif_frames(self, path):
         # 从GIF文件加载帧
@@ -100,13 +106,16 @@ class DesktopPet(tk.Tk):
         # 如果对话框可见，更新对话框的位置
         if self.dialog.winfo_ismapped():
             dialog_x = x + 140  # 调整偏移量
-            dialog_y = y + 140  # 调整偏移量
+            dialog_y = y - 140  # 调整偏移量
             self.dialog.geometry(f"+{int(dialog_x)}+{int(dialog_y)}")
-            
-            # 更新与用户互动窗口的位置
-            button_window_x = x - 50  # 调整偏移量
-            button_window_y = y + 100  # 调整偏移量
-            self.button_window.geometry(f"+{int(button_window_x)}+{int(button_window_y)}")
+
+    def update_button_window_position(self, event):
+        x, y = event.x, event.y
+
+        # 更新与用户互动窗口的位置
+        button_window_x = x - 100  # 调整偏移量
+        button_window_y = y + 140  # 调整偏移量
+        self.button_window.geometry(f"+{int(button_window_x)}+{int(button_window_y)}")
 
     def schedule_random_dialog(self):
         # 每15秒随机弹出对话框，确保只有一个对话框存在
@@ -158,6 +167,10 @@ class DesktopPet(tk.Tk):
 
     def pet_pat(self):
         # 你可以在这里添加抚摸的逻辑，例如播放抚摸的动画或者显示抚摸的消息
+        pass
+
+    def talk_pat(self):
+        # 暂时还没想好
         pass
 
 if __name__ == "__main__":
