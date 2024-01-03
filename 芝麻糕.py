@@ -133,7 +133,7 @@ class DesktopPet(tk.Tk):
     def update_button_window_position(self, event):
         x, y = event.x, event.y
 
-        button_window_x = x - 100
+        button_window_x = x - 180
         button_window_y = y + 140
         self.button_canvas.place(x=button_window_x, y=button_window_y)
 
