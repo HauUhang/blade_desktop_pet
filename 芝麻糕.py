@@ -10,6 +10,7 @@ class DesktopPet(tk.Tk):
         self.title("芝麻糕")
         self.overrideredirect(True)
         self.attributes("-transparent", "white")
+        self.attributes("-topmost", True)  # 保持在最前面
 
         desktop_width = windll.user32.GetSystemMetrics(0)
         desktop_height = windll.user32.GetSystemMetrics(1)
@@ -83,8 +84,8 @@ class DesktopPet(tk.Tk):
 
         # 如果对话框可见，更新对话框的位置
         if self.dialog.winfo_ismapped():
-            dialog_x = x + 100  # 调整偏移量
-            dialog_y = y - 100  # 调整偏移量
+            dialog_x = x + 150  # 调整偏移量
+            dialog_y = y - 150  # 调整偏移量
             self.dialog.geometry(f"+{int(dialog_x)}+{int(dialog_y)}")
 
     def schedule_random_dialog(self):
@@ -112,8 +113,8 @@ class DesktopPet(tk.Tk):
         pet_x, pet_y = self.canvas.coords(self.pet_id)
 
         # 设置对话框的位置在芝麻糕的右上方
-        dialog_x = pet_x + 100  # 调整偏移量
-        dialog_y = pet_y - 100  # 调整偏移量
+        dialog_x = pet_x + 140  # 调整偏移量
+        dialog_y = pet_y - 140  # 调整偏移量
         self.dialog.geometry(f"+{int(dialog_x)}+{int(dialog_y)}")
         self.dialog_label.config(text=message)
         self.dialog.deiconify()  # 显示对话框
