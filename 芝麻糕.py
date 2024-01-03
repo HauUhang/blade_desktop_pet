@@ -45,6 +45,21 @@ class DesktopPet(tk.Tk):
         self.after(15000, self.schedule_random_dialog)  # Initial delay 15 seconds
         self.after(100, self.update_animation)
 
+        # 创建按钮窗口
+        self.button_window = tk.Toplevel(self)
+        self.button_window.overrideredirect(True)
+        button_window_x = pet_x - 100  # 调整偏移量
+        button_window_y = pet_y + 140  # 调整偏移量
+        self.button_window.geometry(f"+{int(button_window_x)}+{int(button_window_y)}")  # 设置按钮窗口的位置
+        self.button_window.attributes("-topmost", True)  # 保持在最前面
+
+        # 添加按钮
+        exit_button = tk.Button(self.button_window, text="退出", command=self.quit)
+        exit_button.pack(side=tk.LEFT, padx=10)
+        
+        pet_button = tk.Button(self.button_window, text="抚摸", command=self.pet_pat)
+        pet_button.pack(side=tk.LEFT, padx=10)
+
         # 创建对话框
         self.dialog = tk.Toplevel(self)
         self.dialog.title("Dialog")
@@ -84,9 +99,14 @@ class DesktopPet(tk.Tk):
 
         # 如果对话框可见，更新对话框的位置
         if self.dialog.winfo_ismapped():
-            dialog_x = x + 150  # 调整偏移量
-            dialog_y = y - 150  # 调整偏移量
+            dialog_x = x + 140  # 调整偏移量
+            dialog_y = y + 140  # 调整偏移量
             self.dialog.geometry(f"+{int(dialog_x)}+{int(dialog_y)}")
+            
+            # 更新与用户互动窗口的位置
+            button_window_x = x - 50  # 调整偏移量
+            button_window_y = y + 100  # 调整偏移量
+            self.button_window.geometry(f"+{int(button_window_x)}+{int(button_window_y)}")
 
     def schedule_random_dialog(self):
         # 每15秒随机弹出对话框，确保只有一个对话框存在
@@ -123,18 +143,22 @@ class DesktopPet(tk.Tk):
 
     def reset_dialog_flag(self):
         if self.dialog and self.dialog.winfo_exists():
-        # 等待一段时间，确保 Tkinter 事件队列中的事件已经完成
+            # 等待一段时间，确保 Tkinter 事件队列中的事件已经完成
             self.after(100, self.hide_dialog)
         else:
-        # 如果对话框不存在，直接重置标志
+            # 如果对话框不存在，直接重置标志
             self.dialog_allowed = True
 
     def hide_dialog(self):
-    # 隐藏对话框
+        # 隐藏对话框
         self.dialog.withdraw()
 
-    # 重置标志
+        # 重置标志
         self.dialog_allowed = True
+
+    def pet_pat(self):
+        # 你可以在这里添加抚摸的逻辑，例如播放抚摸的动画或者显示抚摸的消息
+        pass
 
 if __name__ == "__main__":
     pet_app = DesktopPet("C:/Users/Lenovo/Desktop/blade_desktop_pet/blade.gif")
