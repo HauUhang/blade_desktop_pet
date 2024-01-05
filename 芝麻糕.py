@@ -148,7 +148,7 @@ class DesktopPet(tk.Tk):
             if self.dialog:
                 self.dialog.withdraw()
 
-            random_message = random.choice(["邀诸位共赏", "人有五名，代价有三个", "我记得你，小姑娘"])
+            random_message = random.choice(["邀诸位共赏", "人有五名，代价有三个", "我记得你，小姑娘","该休息了"])
             self.show_dialog(random_message, duration=2000)
 
         self.after(15000, self.schedule_random_dialog)
